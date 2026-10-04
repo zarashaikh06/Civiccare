@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="theme-color" content="#18324b">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="CivicCare">
+    <meta name="application-name" content="CivicCare">
+    <meta name="description" content="CivicCare - Report civic issues in Barshi, Solapur, Beed, Jalna & your city directly to your Nagar Palika. Automated Admin notifications, domain-based worker dispatch, and live status resolution tracker.">
+
+    <title>CivicCare — Your City, Your Voice</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<header class="navbar">
+
+    <div class="container nav-inner">
+
+        <!-- LOGO (Always Visible on Phone and Desktop) -->
+        <a href="#home" class="logo" id="mainLogo" aria-label="CivicCare Home">
+            <div class="logo-icon">
+                🏙️
+            </div>
+            <div class="logo-text">
+                <span class="brand-title">CivicCare</span>
+                <small class="brand-subtitle">Your city, your voice</small>
+            </div>
+        </a>
+
+        <!-- NAV LINKS -->
+        <nav class="nav-links" id="navLinks">
+
+            <!-- Mobile Drawer Top Header -->
+            <div class="mobile-drawer-header">
+                <div class="mobile-drawer-brand">
+                    <span class="logo-icon-sm">🏙️</span>
+                    <div>
+                        <strong>CivicCare</strong>
+                        <small id="mobileDrawerCityLabel">Barshi • Solapur • Beed • Jalna</small>
+                    </div>
+                </div>
+                <button class="drawer-close-btn" onclick="toggleMobileMenu()" aria-label="Close menu">✕</button>
+            </div>
+
+            <a href="#home" onclick="closeMobileMenu()" data-i18n="nav_home">Home</a>
+            <a href="#report" onclick="closeMobileMenu()" data-i18n="nav_report">Report</a>
+            <a href="#track" onclick="closeMobileMenu()" data-i18n="nav_track">Track</a>
+            <a href="#dashboard" id="navDashboardLink" onclick="closeMobileMenu()" data-i18n="nav_dashboard">Dashboard</a>
+
+            <button
+                class="nav-login"
+                id="navLoginBtn"
+                onclick="openLogin(); closeMobileMenu();"
+                data-i18n="nav_login">
+                Login
+            </button>
+
+        </nav>
+
+        <!-- NAV ACTIONS: LANGUAGE, NOTIFICATION BELL, THEME, MOBILE MENU -->
+        <div class="nav-actions">
+
+            <!-- LANGUAGE SELECTOR -->
+            <div class="lang-selector-wrapper" title="Change Language / भाषा बदला / भाषा बदलें">
+                <span class="lang-icon" aria-hidden="true">🌐</span>
+                <select id="languageSelect" class="lang-dropdown" onchange="changeLanguage(this.value)" aria-label="Select Language">
+                    <option value="en">English</option>
+                    <option value="mr">मराठी</option>
+                    <option value="hi">हिंदी</option>
+                </select>
+            </div>
+
+            <!-- NOTIFICATION BELL WITH BADGE -->
+            <div class="notif-wrapper">
+                <button
+                    class="notif-btn"
+                    id="notifBtn"
+                    onclick="toggleNotificationDropdown()"
+                    title="Notifications"
+                    aria-label="View notifications">
+                    🔔
+                    <span id="notifBadge" class="notif-badge hidden">0</span>
+                </button>
+
+                <!-- NOTIFICATION POPUP PANEL -->
+                <div id="notifDropdown" class="notif-dropdown hidden">
+                    <div class="notif-header">
+                        <div>
+                            <strong>Notifications</strong>
+                            <small id="notifRoleBadge" class="notif-role-chip">Guest</small>
+                        </div>
+                        <button type="button" class="btn-clear-notifs" onclick="markAllNotificationsRead()">Clear All</button>
+                    </div>
+                    <div id="notifList" class="notif-list">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+                </div>
+            </div>
+
+            <button
+                class="theme-btn"
+                id="themeBtn"
+                onclick="toggleTheme()"
+                title="Toggle Dark / Light Theme"
+                aria-label="Toggle theme">
+                🌙
+            </button>
+
+            <button
+                class="mobile-menu-btn"
+                onclick="toggleMobileMenu()"
+                aria-label="Open Navigation Menu">
+                ☰
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     HERO SECTION
+===================================================== -->
+
+<main>
+
+<section id="home" class="hero">
+
+    <div class="container hero-grid">
+
+        <!-- LEFT HERO -->
+        <div class="hero-content">
+
+            <div class="hero-badge" data-i18n="hero_badge">
+                ✨ Together, we make cities better
+            </div>
+
+            <h1 id="heroTitle">
+                <span data-i18n="hero_title_1">Spot it.</span><br>
+                <span data-i18n="hero_title_2">Snap it.</span><br>
+                <span class="hero-highlight" data-i18n="hero_title_3">Fix it.</span>
+            </h1>
+
+            <p class="hero-description" data-i18n="hero_desc">
+                See garbage, potholes, broken streetlights, water leakage or drainage issues? Tell your Nagar Palika in seconds with <strong>AI Smart Routing</strong>. Your complaint notifies the <strong>Admin</strong>, who dispatches the <strong>Domain Worker</strong> to solve it on-site!
+            </p>
+
+            <div class="hero-buttons">
+
+                <button
+                    class="btn btn-primary"
+                    onclick="goToReport()"
+                    data-i18n="hero_btn_report">
+                    📸 Report a Problem
+                </button>
+
+                <button
+                    class="btn btn-text"
+                    onclick="goToTrack()"
+                    data-i18n="hero_btn_track">
+                    Track my complaint →
+                </button>
+
+                <button
+                    class="btn btn-admin-shortcut"
+                    id="heroRoleActionBtn"
+                    onclick="handleHeroRoleAction()">
+                    👑 Admin / Worker Portal
+                </button>
+
+            </div>
+
+            <div class="hero-features">
+
+                <div class="hero-feature">
+                    <div class="feature-icon">
+                        📍
+                    </div>
+                    <div>
+                        <strong>GPS & City</strong>
+                        <span>Auto-routed to ward</span>
+                    </div>
+                </div>
+
+                <div class="hero-feature">
+                    <div class="feature-icon">
+                        ✨
+                    </div>
+                    <div>
+                        <strong>AI Detection</strong>
+                        <span>Categorizes domain</span>
+                    </div>
+                </div>
+
+                <div class="hero-feature">
+                    <div class="feature-icon">
+                        🔔
+                    </div>
+                    <div>
+                        <strong>Live Alerts</strong>
+                        <span>Admin & Worker sync</span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- RIGHT HERO VISUAL -->
+        <div class="hero-visual">
+
+            <div class="sun">☀️</div>
+            <div class="cloud cloud-one">☁️</div>
+            <div class="cloud cloud-two">☁️</div>
+
+            <div class="floating-card card-one">
+                <span>🗑️</span>
+                <div>
+                    <strong>Garbage</strong>
+                    <small>Admin Notified 🔔</small>
+                </div>
+            </div>
+
+            <div class="floating-card card-two">
+                <span>🛣️</span>
+                <div>
+                    <strong>Pothole</strong>
+                    <small>Worker Dispatched 👷</small>
+                </div>
+            </div>
+
+            <div class="floating-card card-three">
+                <span>💡</span>
+                <div>
+                    <strong>Streetlight</strong>
+                    <small>Resolved today ✓</small>
+                </div>
+            </div>
+
+            <div class="city">
+                <div class="building building-one">
+                    <div class="windows">
+                        <span></span><span></span><span></span><span></span>
+                    </div>
+                </div>
+
+                <div class="building building-two">
+                    <div class="roof"></div>
+                    <div class="windows">
+                        <span></span><span></span><span></span><span></span><span></span><span></span>
+                    </div>
+                </div>
+
+                <div class="building building-three">
+                    <div class="hospital-cross">✚</div>
+                    <div class="windows">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+
+                <div class="building building-four">
+                    <div class="clock">🕐</div>
+                </div>
+            </div>
+
+            <div class="road"></div>
+            <div class="hero-worker">🧑🔧</div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     REPORT SECTION
+===================================================== -->
+
+<section id="report" class="section report-section">
+
+    <div class="container">
+
+        <div class="section-title">
+            <span>REPORT A PROBLEM</span>
+            <h2>Help improve your neighbourhood 💛</h2>
+            <p>
+                Choose your city (Barshi, Solapur, Beed, Jalna, etc.), describe what you see, let AI classify the domain, and submit directly to your Nagar Palika.
+            </p>
+        </div>
+
+        <div class="report-card">
+
+            <!-- STEP 1: CHOOSE CITY / NAGAR PALIKA (INCLUDING BARSHI, SOLAPUR, BEED) -->
+            <div class="form-section city-section-box">
+
+                <div class="form-title">
+                    <span class="step-number">1</span>
+                    <div>
+                        <h3 data-i18n="step1_title">Select Your City / Nagar Palika</h3>
+                        <p data-i18n="step1_desc">Routes your complaint directly to your local municipal council</p>
+                    </div>
+                </div>
+
+                <div class="city-selector-wrapper">
+                    <div class="city-input-group">
+                        <span class="city-select-icon">🏛️</span>
+                        <select id="selectedCity" class="city-dropdown" onchange="onCityChanged()">
+                            <option value="Barshi Nagar Parishad">Barshi Nagar Parishad (Barshi)</option>
+                            <option value="Solapur Municipal Corporation">Solapur Municipal Corporation (Solapur)</option>
+                            <option value="Beed Nagar Palika">Beed Nagar Palika (Beed)</option>
+                            <option value="Jalna Nagar Palika">Jalna Nagar Palika (Jalna)</option>
+                            <option value="Brihanmumbai Municipal Corporation (BMC)">Brihanmumbai Municipal Corporation (Mumbai)</option>
+                            <option value="Pune Municipal Corporation (PMC)">Pune Municipal Corporation (Pune)</option>
+                            <option value="Nagpur Municipal Corporation (NMC)">Nagpur Municipal Corporation (Nagpur)</option>
+                            <option value="Chhatrapati Sambhajinagar Municipal Corporation">Chhatrapati Sambhajinagar Municipal Corporation</option>
+                            <option value="Municipal Corporation of Delhi (MCD)">Municipal Corporation of Delhi (Delhi)</option>
+                            <option value="Bruhat Bengaluru Mahanagara Palike (BBMP)">Bruhat Bengaluru Mahanagara Palike (Bengaluru)</option>
+                        </select>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="btn-detect-city"
+                        onclick="autoDetectCityFromGPS()"
+                        title="Auto-detect city from GPS"
+                        data-i18n="btn_detect_city">
+                        📍 Auto-Detect City
+                    </button>
+                </div>
+
+                <div id="cityStatusBanner" class="city-status-banner">
+                    Connected to: <strong id="activeCityLabel">Barshi Nagar Parishad</strong>
+                </div>
+
+            </div>
+
+
+            <!-- STEP 2: CATEGORY SELECTION -->
+            <div class="form-section">
+
+                <div class="form-title">
+                    <span class="step-number">2</span>
+                    <div>
+                        <h3 data-i18n="step2_title">What is the problem?</h3>
+                        <p data-i18n="step2_desc">Select category (or describe it below and let AI auto-select for you)</p>
+                    </div>
+                </div>
+
+                <div class="category-grid">
+
+                    <button
+                        type="button"
+                        class="category-card selected"
+                        data-category="Garbage / Waste">
+                        <div class="category-icon orange">🗑️</div>
+                        <strong data-i18n="cat_garbage">Garbage</strong>
+                        <span data-i18n="cat_garbage_desc">Waste & overflowing bins</span>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="category-card"
+                        data-category="Pothole / Road">
+                        <div class="category-icon blue">🛣️</div>
+                        <strong data-i18n="cat_pothole">Pothole / Road</strong>
+                        <span data-i18n="cat_pothole_desc">Broken roads & potholes</span>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="category-card"
+                        data-category="Streetlight">
+                        <div class="category-icon yellow">💡</div>
+                        <strong data-i18n="cat_streetlight">Streetlight</strong>
+                        <span data-i18n="cat_streetlight_desc">Broken streetlights</span>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="category-card"
+                        data-category="Water">
+                        <div class="category-icon teal">💧</div>
+                        <strong data-i18n="cat_water">Water</strong>
+                        <span data-i18n="cat_water_desc">Leakage & supply issues</span>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="category-card"
+                        data-category="Drainage">
+                        <div class="category-icon purple">🚰</div>
+                        <strong data-i18n="cat_drainage">Drainage</strong>
+                        <span data-i18n="cat_drainage_desc">Blocked drains & flooding</span>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="category-card"
+                        data-category="Other">
+                        <div class="category-icon pink">📢</div>
+                        <strong data-i18n="cat_other">Other</strong>
+                        <span data-i18n="cat_other_desc">Any other civic problem</span>
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- STEP 3: DESCRIPTION + AI AUTO-DETECTION & VOICE -->
+            <div class="form-section">
+
+                <div class="form-title">
+                    <span class="step-number">3</span>
+                    <div>
+                        <h3 data-i18n="step3_title">Tell us more (AI Auto-Detection & Voice)</h3>
+                        <p data-i18n="step3_desc">Describe what you see — our AI automatically detects the category & municipal department</p>
+                    </div>
+                </div>
+
+                <div class="description-header-row">
+                    <label class="input-label" for="description" data-i18n="form_desc_label">
+                        Problem description
+                    </label>
+
+                    <div class="voice-controls-bar">
+                        <button
+                            type="button"
+                            class="btn-voice-input"
+                            id="voiceBtn"
+                            onclick="toggleVoiceInput()"
+                            title="Speak your complaint in Marathi, Hindi, or English">
+                            <span class="voice-mic-icon" id="voiceMicIcon">🎙️</span>
+                            <span id="voiceBtnText">Speak (तक्रार बोला)</span>
+                        </button>
+
+                        <button
+                            type="button"
+                            class="btn-tts-listen"
+                            id="ttsBtn"
+                            onclick="listenToDescription()"
+                            title="Listen to description">
+                            🔊 <span id="ttsBtnText">Listen</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Voice Status Indicator -->
+                <div id="voiceStatusIndicator" class="voice-status-indicator hidden">
+                    <span class="pulsing-mic-ring"></span>
+                    <span id="voiceStatusText">Listening... Please speak in Marathi, Hindi, or English</span>
+                </div>
+
+                <div class="textarea-voice-container">
+                    <textarea
+                        id="description"
+                        placeholder="Type or tap the microphone to speak your issue..."
+                        maxlength="1000"
+                        oninput="handleDescriptionInput()"></textarea>
+
+                    <button
+                        type="button"
+                        class="floating-mic-btn"
+                        id="floatingMicBtn"
+                        onclick="toggleVoiceInput()"
+                        title="Speak to type problem automatically">
+                        🎙️
+                    </button>
+                </div>
+
+                <div class="ai-controls-row">
+                    <button
+                        type="button"
+                        class="btn-ai-detect"
+                        id="aiDetectBtn"
+                        onclick="triggerAIDetection()"
+                        data-i18n="ai_detect_btn">
+                        ✨ AI Auto-Detect Domain & Urgency
+                    </button>
+
+                    <div class="character-count">
+                        <span id="charCount">0</span>/1000
+                    </div>
+                </div>
+
+                <!-- AI PREDICTION / DOMAIN CARD -->
+                <div id="aiPredictionBox" class="ai-prediction-card hidden">
+                    <div class="ai-prediction-header">
+                        <div class="ai-tag">✨ AI Smart Domain Classification</div>
+                        <div class="ai-confidence" id="aiConfidenceBadge">95% Match</div>
+                    </div>
+                    <div class="ai-details-grid">
+                        <div class="ai-item">
+                            <small>Detected Category</small>
+                            <strong id="aiDetectedCategory">🗑️ Garbage / Waste</strong>
+                        </div>
+                        <div class="ai-item">
+                            <small>Assigned Municipal Department</small>
+                            <strong id="aiDetectedDomain">Sanitation & Solid Waste Dept</strong>
+                        </div>
+                        <div class="ai-item">
+                            <small>Assessed Urgency</small>
+                            <span class="ai-priority-badge priority-high" id="aiDetectedPriority">High Priority</span>
+                        </div>
+                    </div>
+                    <p class="ai-rationale" id="aiRationaleText">
+                        AI automatically matched problem triggers and routed to the responsible department.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <!-- STEP 4: PHOTO UPLOAD -->
+            <div class="form-section">
+
+                <div class="form-title">
+                    <span class="step-number">4</span>
+                    <div>
+                        <h3>Add a photo</h3>
+                        <p>A picture helps officers and workers verify the issue quickly</p>
+                    </div>
+                </div>
+
+                <label class="upload-area" for="photo">
+                    <div class="upload-icon">📸</div>
+                    <strong>Tap to upload a photo</strong>
+                    <span>JPG, PNG or WEBP • Maximum 10 MB</span>
+                    <input
+                        type="file"
+                        id="photo"
+                        accept="image/*"
+                        capture="environment">
+                </label>
+
+                <div id="photoPreviewBox" class="photo-preview-box hidden">
+                    <img id="photoPreview" alt="Selected complaint photo">
+                    <button
+                        type="button"
+                        class="remove-photo"
+                        onclick="removePhoto()"
+                        title="Remove photo">
+                        ✕
+                    </button>
+                </div>
+
+            </div>
+
+
+            <!-- STEP 5: GPS LOCATION -->
+            <div class="form-section">
+
+                <div class="form-title">
+                    <span class="step-number">5</span>
+                    <div>
+                        <h3>Where is it?</h3>
+                        <p>Location helps us send workers to the exact spot</p>
+                    </div>
+                </div>
+
+                <div class="location-box">
+                    <div class="location-icon">📍</div>
+                    <div class="location-content">
+                        <strong>Your location</strong>
+                        <span id="gpsStatus">Location not captured yet</span>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="gps-button"
+                        id="gpsBtn"
+                        onclick="getGPS()">
+                        📍 Use GPS
+                    </button>
+                    <button
+                        type="button"
+                        class="gps-clear-btn hidden"
+                        id="gpsClearBtn"
+                        onclick="turnOffGPS(true)"
+                        title="Turn off GPS location">
+                        🛑 Turn Off GPS
+                    </button>
+                </div>
+
+                <!-- GPS Privacy & 5-Minute Auto-Expiry Badge -->
+                <div id="gpsExpiryBadge" class="gps-expiry-badge hidden">
+                    <div class="gps-expiry-content">
+                        <span class="gps-pulse-dot"></span>
+                        <span>
+                            <strong>GPS Active</strong> • Auto-off in <span id="gpsTimerCountdown" class="gps-timer-countdown">05:00</span>
+                        </span>
+                    </div>
+                    <small>Auto-expires after 5 minutes to protect your privacy & save phone battery 🔒</small>
+                </div>
+
+                <div class="coordinates" id="coordinates"></div>
+
+            </div>
+
+
+            <!-- LANDMARK / ADDRESS -->
+            <div class="form-section">
+
+                <label class="input-label" for="address">
+                    Nearby landmark / Street address <small>(optional)</small>
+                </label>
+
+                <input
+                    type="text"
+                    id="address"
+                    placeholder="Example: Near Subhash Chowk, Opposite Municipal Garden, Barshi">
+
+            </div>
+
+
+            <!-- CITIZEN CONTACT -->
+            <div class="form-section citizen-contact-box">
+
+                <div class="grid-2-col">
+                    <div>
+                        <label class="input-label" for="citizenNameInput" id="citizenNameLabel">Your Name</label>
+                        <input type="text" id="citizenNameInput" placeholder="Enter your full name">
+                    </div>
+                    <div>
+                        <label class="input-label" for="citizenPhoneInput" id="citizenPhoneLabel">Mobile Number</label>
+                        <input type="tel" id="citizenPhoneInput" placeholder="10-digit mobile number">
+                    </div>
+                </div>
+
+                <!-- ANONYMOUS PRIVACY TOGGLE -->
+                <div class="anonymous-toggle-wrapper">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="anonymousCheckbox" onchange="toggleAnonymousReporting()">
+                        <span class="checkmark"></span>
+                        <span class="checkbox-label-text">
+                            <strong data-i18n="anon_label">🔒 Report Anonymously (माझी ओळख गोपनीय ठेवा)</strong>
+                            <small data-i18n="anon_desc">Hide your name & phone number. Your complaint is submitted securely with only the GPS problem details.</small>
+                        </span>
+                    </label>
+                </div>
+
+            </div>
+
+
+            <!-- SUBMIT BUTTON -->
+            <button
+                type="button"
+                id="submitComplaintBtn"
+                class="submit-button"
+                onclick="submitComplaint()"
+                data-i18n="btn_submit_complaint">
+                <span>🚀</span> Send to my Nagar Palika
+            </button>
+
+            <p class="privacy-note">
+                🔒 When you submit, an <strong>automated notification</strong> is dispatched instantly to the <strong>Nagar Palika Admin</strong>!
+            </p>
+
+            <!-- SUCCESS MESSAGE -->
+            <div id="successBox" class="success-box hidden"></div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     HOW IT WORKS
+===================================================== -->
+
+<section class="section how-section">
+
+    <div class="container">
+
+        <div class="section-title">
+            <span>HOW IT WORKS</span>
+            <h2>Multi-Role Smart City Workflow ✨</h2>
+        </div>
+
+        <div class="steps-grid">
+
+            <div class="how-card">
+                <div class="how-number">01</div>
+                <div class="how-icon">📸</div>
+                <h3>1. Citizen Reports</h3>
+                <p>Citizen in Barshi, Solapur, or Beed reports an issue. AI auto-categorizes the domain.</p>
+            </div>
+
+            <div class="how-card">
+                <div class="how-number">02</div>
+                <div class="how-icon">🔔</div>
+                <h3>2. Admin Alerted</h3>
+                <p>Nagar Palika Admin receives an immediate notification on their locked Admin dashboard.</p>
+            </div>
+
+            <div class="how-card">
+                <div class="how-number">03</div>
+                <div class="how-icon">👷</div>
+                <h3>3. Worker Assigned</h3>
+                <p>Admin approves and assigns a dedicated domain worker, who gets alerted on their phone.</p>
+            </div>
+
+            <div class="how-card">
+                <div class="how-number">04</div>
+                <div class="how-icon">✅</div>
+                <h3>4. Resolved On-Site</h3>
+                <p>Worker fixes the issue on-site, marks it resolved, and citizen tracker updates live!</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TRACK COMPLAINT
+===================================================== -->
+
+<section id="track" class="section track-section">
+
+    <div class="container">
+
+        <div class="track-card">
+
+            <div class="track-icon">🔎</div>
+
+            <h2 data-i18n="track_heading">Track your complaint</h2>
+            <p data-i18n="track_desc">Enter your complaint ID to see real-time status, Admin approval, and assigned Worker details.</p>
+
+            <div class="track-form">
+                <input
+                    type="text"
+                    id="trackId"
+                    placeholder="Example: CC-84729104"
+                    autocomplete="off">
+
+                <button
+                    type="button"
+                    onclick="trackComplaint()"
+                    class="track-button"
+                    data-i18n="track_btn">
+                    Track →
+                </button>
+            </div>
+
+            <div id="trackResult" class="track-result hidden"></div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     ROLE-BASED DASHBOARD (CITIZEN / ADMIN / WORKER)
+===================================================== -->
+
+<section id="dashboard" class="section dashboard-section">
+
+    <div class="container">
+
+        <!-- Top Header & Role State -->
+        <div class="dashboard-top">
+
+            <div>
+                <span class="section-label" id="dashboardRoleBadge">PUBLIC OVERVIEW</span>
+                <h2 id="dashboardHeading" data-i18n="dashboard_heading">Civic Complaint Dashboard 📊</h2>
+                <p id="dashboardSubtitle" data-i18n="dashboard_desc">Real-time civic status across Barshi, Solapur, Beed & Maharashtra.</p>
+            </div>
+
+            <div class="dashboard-top-actions">
+                <div id="activeRoleIndicator" class="active-role-indicator">
+                    Role: <strong id="currentRoleText">Guest / Citizen</strong>
+                </div>
+
+                <button
+                    class="refresh-button"
+                    onclick="refreshCurrentDashboard()">
+                    🔄 Refresh
+                </button>
+            </div>
+
+        </div>
+
+
+        <!-- =============================================
+             VIEW A: CITIZEN / GUEST OVERVIEW (PUBLIC ONLY)
+        ============================================== -->
+        <div id="citizenDashboardView" class="dashboard-role-view">
+
+            <!-- STATS CARDS -->
+            <div class="stats-grid">
+
+                <div class="stat-card stat-orange">
+                    <div class="stat-top"><span>📋</span></div>
+                    <strong id="statTotal">0</strong>
+                    <p>Total complaints</p>
+                </div>
+
+                <div class="stat-card stat-blue">
+                    <div class="stat-top"><span>📨</span></div>
+                    <strong id="statSubmitted">0</strong>
+                    <p>Submitted</p>
+                </div>
+
+                <div class="stat-card stat-purple">
+                    <div class="stat-top"><span>🔧</span></div>
+                    <strong id="statProgress">0</strong>
+                    <p>Assigned / In Progress</p>
+                </div>
+
+                <div class="stat-card stat-green">
+                    <div class="stat-top"><span>✅</span></div>
+                    <strong id="statResolved">0</strong>
+                    <p>Resolved</p>
+                </div>
+
+            </div>
+
+            <!-- PUBLIC RECENT COMPLAINTS TABLE (ACCESSIBLE TO CITIZENS & WORKERS) -->
+            <div class="dashboard-table-card">
+                <div class="table-header">
+                    <div>
+                        <h3 data-i18n="public_reports_title">Recent Public Citizen Reports</h3>
+                        <p data-i18n="public_reports_desc">Publicly reported issues across Barshi, Solapur, Beed & other cities with real-time status</p>
+                    </div>
+                    <div id="publicTableBadge" class="table-badge">Public reports</div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Complaint ID</th>
+                                <th>City / Nagar Palika</th>
+                                <th>Category & Domain</th>
+                                <th>Problem Details</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="publicComplaintTable">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- =============================================
+             VIEW B: ADMIN CONTROL CENTER (STRICTLY ADMIN ONLY!)
+        ============================================== -->
+        <div id="adminDashboardView" class="dashboard-role-view hidden">
+
+            <!-- ADMIN STATS CARDS -->
+            <div class="stats-grid">
+
+                <div class="stat-card stat-orange">
+                    <div class="stat-top"><span>📋</span></div>
+                    <strong id="adminStatTotal">0</strong>
+                    <p>Total Complaints</p>
+                </div>
+
+                <div class="stat-card stat-blue">
+                    <div class="stat-top"><span>🚨</span></div>
+                    <strong id="adminStatSubmitted">0</strong>
+                    <p>Pending Admin Approval</p>
+                </div>
+
+                <div class="stat-card stat-purple">
+                    <div class="stat-top"><span>👷</span></div>
+                    <strong id="adminStatAssigned">0</strong>
+                    <p>Assigned to Workers</p>
+                </div>
+
+                <div class="stat-card stat-green">
+                    <div class="stat-top"><span>✅</span></div>
+                    <strong id="adminStatResolved">0</strong>
+                    <p>Successfully Resolved</p>
+                </div>
+
+            </div>
+
+            <!-- ADMIN TOOLBAR & FILTERS -->
+            <div class="admin-toolbar-card">
+
+                <div class="admin-toolbar-row">
+
+                    <div class="admin-filter-group">
+                        <label for="adminCityFilter">🏛️ Filter by City:</label>
+                        <select id="adminCityFilter" onchange="filterAdminComplaints()">
+                            <option value="all">All Municipalities (Barshi, Solapur, Beed...)</option>
+                            <option value="Barshi">Barshi Nagar Parishad</option>
+                            <option value="Solapur">Solapur Municipal Corporation</option>
+                            <option value="Beed">Beed Nagar Palika</option>
+                            <option value="Jalna">Jalna Nagar Palika</option>
+                            <option value="Mumbai">Brihanmumbai (BMC)</option>
+                            <option value="Pune">Pune (PMC)</option>
+                            <option value="Nagpur">Nagpur (NMC)</option>
+                        </select>
+                    </div>
+
+                    <div class="admin-filter-group">
+                        <label>📊 Status Filter:</label>
+                        <div class="status-chips-filter">
+                            <button type="button" class="chip-filter active" data-status="all" onclick="setAdminStatusFilter('all')">All</button>
+                            <button type="button" class="chip-filter" data-status="submitted" onclick="setAdminStatusFilter('submitted')">Needs Approval ⏳</button>
+                            <button type="button" class="chip-filter" data-status="assigned" onclick="setAdminStatusFilter('assigned')">Assigned 👷</button>
+                            <button type="button" class="chip-filter" data-status="in_progress" onclick="setAdminStatusFilter('in_progress')">In Progress 🔧</button>
+                            <button type="button" class="chip-filter" data-status="resolved" onclick="setAdminStatusFilter('resolved')">Resolved ✅</button>
+                        </div>
+                    </div>
+
+                    <div class="admin-filter-group search-filter-group">
+                        <label for="adminSearchInput">🔍 Search:</label>
+                        <input
+                            type="text"
+                            id="adminSearchInput"
+                            placeholder="Search complaint #, street, or citizen..."
+                            oninput="debounceAdminSearch()">
+                    </div>
+
+                </div>
+
+                <div class="admin-notice-banner">
+                    <span class="admin-shield">🛡️</span>
+                    <div>
+                        <strong>Authorized Nagar Palika Administrator Access Active</strong>:
+                        Review complaints below. Click <strong>"✅ Approve & Assign Worker"</strong> to agree to resolve the problem and dispatch a domain worker.
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ADMIN COMPLAINTS TABLE -->
+            <div class="dashboard-table-card">
+
+                <div class="table-header">
+                    <div>
+                        <h3>Municipal Complaint Moderation & Worker Assignment</h3>
+                        <p>Assign workers by domain (Sanitation, Road, Electrical, Water, Drainage)</p>
+                    </div>
+                    <div id="adminTableBadge" class="table-badge">Admin View</div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Complaint ID</th>
+                                <th>City / Nagar Palika</th>
+                                <th>Category & Domain</th>
+                                <th>Citizen & Details</th>
+                                <th>Assigned Worker</th>
+                                <th>Status</th>
+                                <th class="action-col">Admin Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminComplaintTable">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =============================================
+             VIEW C: WORKER TASK PORTAL (STRICTLY WORKER ONLY!)
+        ============================================== -->
+        <div id="workerDashboardView" class="dashboard-role-view hidden">
+
+            <div class="worker-welcome-card">
+                <div class="worker-avatar">👷</div>
+                <div class="worker-info">
+                    <h3 id="workerNameHeader">Ramesh Pawar</h3>
+                    <p id="workerDomainHeader">Sanitation & Solid Waste Department</p>
+                    <span class="worker-badge">🟢 On Duty • Ready for Tasks</span>
+                </div>
+            </div>
+
+            <!-- WORKER TASKS CONTAINER -->
+            <div class="dashboard-table-card">
+                <div class="table-header">
+                    <div>
+                        <h3>My Assigned Municipal Jobs 🛠️</h3>
+                        <p>Tasks assigned to you by the Nagar Palika Administrator</p>
+                    </div>
+                    <div id="workerTaskCountBadge" class="table-badge">0 Active Tasks</div>
+                </div>
+
+                <div id="workerTaskList" class="worker-task-grid">
+                    <!-- Populated dynamically by JS -->
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     ADMIN ASSIGN WORKER MODAL
+===================================================== -->
+
+<div id="assignWorkerModal" class="modal hidden">
+
+    <div class="modal-card">
+
+        <button class="modal-close" onclick="closeAssignWorkerModal()">×</button>
+
+        <div class="modal-icon assign-modal-icon">👷</div>
+
+        <h2>Approve & Assign Worker</h2>
+        <p>Assign the municipal worker according to the problem domain</p>
+
+        <div class="admin-modal-info">
+            <div>Complaint: <strong id="assignComplaintNum">CC-00000000</strong></div>
+            <div>City: <span id="assignComplaintCity">Barshi</span></div>
+            <div>Category: <span id="assignComplaintCat">Garbage</span></div>
+            <div>Required Domain: <strong id="assignComplaintDomain" style="color:#4f46e5;">Sanitation Department</strong></div>
+        </div>
+
+        <label class="input-label" for="workerSelectDropdown">Select Municipal Worker</label>
+        <select id="workerSelectDropdown" class="city-dropdown" style="margin-bottom:14px;">
+            <!-- Populated dynamically based on domain -->
+        </select>
+
+        <label class="input-label" for="adminWorkerDirective">Admin Directive to Worker</label>
+        <textarea
+            id="adminWorkerDirective"
+            placeholder="Example: Approved. Please deploy cleaning truck to Subhash Chowk and clear the overflowing garbage container immediately."
+            style="min-height:90px;"></textarea>
+
+        <div class="admin-action-btn-row">
+            <button type="button" class="btn btn-secondary" onclick="closeAssignWorkerModal()">Cancel</button>
+            <button type="button" class="btn btn-primary" id="confirmAssignBtn" onclick="executeWorkerAssignment()">
+                🚀 Approve & Dispatch Notification
+            </button>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     LOGIN MODAL (WITH 3 ROLES: CITIZEN, ADMIN, WORKER)
+===================================================== -->
+
+<div id="loginModal" class="modal hidden">
+
+    <div class="modal-card">
+
+        <button class="modal-close" onclick="closeLogin()">×</button>
+
+        <div class="modal-icon">🔐</div>
+
+        <h2>Welcome to CivicCare</h2>
+        <p>Login to access your role-specific dashboard</p>
+
+        <!-- 3 Role Tabs -->
+        <div class="auth-role-tabs">
+            <button type="button" class="role-tab active" id="tabRoleCitizen" onclick="switchLoginRole('citizen')">👤 Citizen</button>
+            <button type="button" class="role-tab" id="tabRoleAdmin" onclick="switchLoginRole('admin')">👑 Admin</button>
+            <button type="button" class="role-tab" id="tabRoleWorker" onclick="switchLoginRole('worker')">👷 Worker</button>
+        </div>
+
+        <!-- 1-CLICK QUICK DEMO BUTTONS -->
+        <div class="quick-admin-box" id="quickDemoBox">
+            <div id="quickAdminAction" class="hidden">
+                <button type="button" class="btn-quick-admin" onclick="quickLoginRole('admin')">
+                    ⚡ 1-Click Demo Admin Login
+                </button>
+                <small>Demo Admin: Phone <strong>9876543210</strong> • Pass <strong>admin123</strong> • Key <strong>MAHA-2026</strong></small>
+            </div>
+
+            <div id="quickWorkerAction" class="hidden">
+                <button type="button" class="btn-quick-worker" onclick="quickLoginRole('worker')">
+                    ⚡ 1-Click Demo Worker Login
+                </button>
+                <small>Demo Worker: Phone <strong>9811111111</strong> • Pass <strong>worker123</strong></small>
+            </div>
+
+            <div id="quickCitizenAction">
+                <button type="button" class="btn-quick-citizen" onclick="quickLoginRole('citizen')">
+                    ⚡ 1-Click Demo Citizen Login
+                </button>
+                <small>Demo Citizen: Phone <strong>9123456780</strong> • Pass <strong>citizen123</strong></small>
+            </div>
+        </div>
+
+        <form id="loginForm">
+
+            <label for="loginPhone">Mobile number</label>
+            <input
+                type="tel"
+                id="loginPhone"
+                placeholder="Enter 10-digit mobile number"
+                required>
+
+            <label for="loginPassword">Password</label>
+            <input
+                type="password"
+                id="loginPassword"
+                placeholder="Enter password"
+                required>
+
+            <!-- Admin Security Key Group -->
+            <div id="adminSecurityKeyGroup" class="admin-security-key-box hidden">
+                <label for="loginSecurityKey" style="display:flex; align-items:center; gap:6px; color:#b45309; font-weight:800; font-size:13px; margin-bottom:4px;">
+                    🛡️ Municipal Officer Security Key
+                    <span style="font-size:11px; color:#92400e; font-weight:normal;">(Required for Admin)</span>
+                </label>
+                <input
+                    type="password"
+                    id="loginSecurityKey"
+                    placeholder="Enter Security Key (e.g. MAHA-2026)"
+                    autocomplete="off">
+                <small style="display:block; font-size:11.5px; color:#78350f; margin-top:4px;">
+                    🔒 Official key required to access Admin Control Center. Demo Key: <strong style="background:#fef3c7; padding:1px 5px; border-radius:4px; font-family:monospace;">MAHA-2026</strong>
+                </small>
+            </div>
+
+            <button type="submit" class="modal-submit" id="loginSubmitBtn">
+                Login
+            </button>
+
+        </form>
+
+        <div class="modal-divider"><span>or</span></div>
+
+        <button class="register-link" onclick="openRegister()">
+            Create a new account
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     REGISTER MODAL
+===================================================== -->
+
+<div id="registerModal" class="modal hidden">
+
+    <div class="modal-card">
+
+        <button class="modal-close" onclick="closeRegister()">×</button>
+
+        <div class="modal-icon register-icon">👋</div>
+
+        <h2>Create account</h2>
+        <p>Join CivicCare for Barshi, Solapur, Beed & your city.</p>
+
+        <form id="registerForm">
+
+            <label for="registerName">Your name</label>
+            <input
+                type="text"
+                id="registerName"
+                placeholder="Enter your full name"
+                required>
+
+            <label for="registerPhone">Mobile number</label>
+            <input
+                type="tel"
+                id="registerPhone"
+                placeholder="Enter 10-digit mobile number"
+                required>
+
+            <label for="registerEmail">Email <small>(optional)</small></label>
+            <input
+                type="email"
+                id="registerEmail"
+                placeholder="Enter email address">
+
+            <label for="registerRole">Account Role</label>
+            <select id="registerRole" class="city-dropdown" style="margin-bottom:12px;" onchange="toggleRegisterDomain(this.value)">
+                <option value="citizen">Citizen (Report & Track)</option>
+                <option value="admin">Municipal Administrator / Officer</option>
+                <option value="worker">Municipal Field Worker</option>
+            </select>
+
+            <div id="registerDomainGroup" class="hidden">
+                <label for="registerDomain">Worker Domain / Department</label>
+                <select id="registerDomain" class="city-dropdown" style="margin-bottom:12px;">
+                    <option value="Sanitation & Solid Waste Department">Sanitation & Solid Waste Department</option>
+                    <option value="Road Infrastructure & Maintenance">Road Infrastructure & Maintenance</option>
+                    <option value="Streetlight & Electrical Department">Streetlight & Electrical Department</option>
+                    <option value="Water Works & Supply Department">Water Works & Supply Department</option>
+                    <option value="Drainage & Sewage Management">Drainage & Sewage Management</option>
+                </select>
+            </div>
+
+            <!-- Admin Security Key for Admin Registration -->
+            <div id="registerSecurityKeyGroup" class="admin-security-key-box hidden">
+                <label for="registerSecurityKey" style="display:flex; align-items:center; gap:6px; color:#b45309; font-weight:800; font-size:13px; margin-bottom:4px;">
+                    🛡️ Municipal Officer Security Key
+                    <span style="font-size:11px; color:#92400e; font-weight:normal;">(Required for Admin Account)</span>
+                </label>
+                <input
+                    type="password"
+                    id="registerSecurityKey"
+                    placeholder="Enter Security Key (e.g. MAHA-2026)"
+                    autocomplete="off">
+                <small style="display:block; font-size:11.5px; color:#78350f; margin-top:4px;">
+                    🔒 Official key required. Demo Key: <strong style="background:#fef3c7; padding:1px 5px; border-radius:4px; font-family:monospace;">MAHA-2026</strong>
+                </small>
+            </div>
+
+            <label for="registerPassword">Password</label>
+            <input
+                type="password"
+                id="registerPassword"
+                placeholder="Create password (minimum 6 characters)"
+                minlength="6"
+                required>
+
+            <button type="submit" class="modal-submit register-submit">
+                Create account
+            </button>
+
+        </form>
+
+        <button class="register-link" onclick="backToLogin()">
+            ← Back to login
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     USER PROFILE PANEL
+===================================================== -->
+
+<div id="userPanel" class="user-panel hidden">
+
+    <div class="user-avatar" id="userAvatarIcon">👤</div>
+
+    <div>
+        <strong id="userName">Citizen</strong>
+        <span id="userRole">Citizen</span>
+    </div>
+
+    <button onclick="logout()">Logout</button>
+
+</div>
+
+
+<!-- =====================================================
+     TOAST NOTIFICATIONS
+===================================================== -->
+
+<div id="toast" class="toast"></div>
+
+
+<!-- =====================================================
+     BACK TO TOP
+===================================================== -->
+
+<button
+    id="backTop"
+    class="back-top"
+    onclick="window.scrollTo({top:0,behavior:'smooth'})"
+    title="Back to Top"
+    aria-label="Back to Top">
+    ↑
+</button>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+    <div class="container footer-grid">
+
+        <div>
+            <div class="footer-logo">
+                🏙️ CivicCare
+            </div>
+            <p>
+                Empowering Barshi, Solapur, Beed, Jalna, and cities across Maharashtra. Real-time civic resolution with automated Admin notification and Worker task dispatch.
+            </p>
+        </div>
+
+        <div>
+            <h4>Quick links</h4>
+            <a href="#home">Home</a>
+            <a href="#report">Report a problem</a>
+            <a href="#track">Track complaint</a>
+            <a href="#dashboard">Municipal Dashboard</a>
+        </div>
+
+        <div>
+            <h4>Portals & Roles</h4>
+            <a href="#report">AI Smart Triage</a>
+            <a href="#" onclick="openLoginWithRole('admin'); return false;">👑 Admin Portal</a>
+            <a href="#" onclick="openLoginWithRole('worker'); return false;">👷 Worker Task Portal</a>
+            <a href="#" onclick="openLogin(); return false;">Login / Register</a>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        © <span id="currentYear"></span> CivicCare — Active in Barshi, Solapur, Beed, Jalna & beyond. 💙
+    </div>
+
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>
