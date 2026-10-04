@@ -16,7 +16,8 @@ const JWT_SECRET = process.env.JWT_SECRET || "civiccare_super_secret_jwt_key_202
 app.use(cors());
 app.use(express.json());
 
-// Serve static frontend files from parent directory
+// Serve static frontend files
+app.use(express.static(__dirname));
 app.use(express.static(path.join(__dirname, "..")));
 
 // =========================================
